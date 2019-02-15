@@ -17,7 +17,7 @@ namespace PathFinding
 
             while (currentNode.parents.Count > 0)
             {
-                parent = currentNode.parents.OrderBy(node => node.F).ToList()[0];
+                parent = FindLowest(currentNode.parents);
 
                 currentNode = parent;
                 totalPath.Add(currentNode);
@@ -27,18 +27,15 @@ namespace PathFinding
         }
         public List<Node> GeneratePath(Vector2 startPos, Vector2 endPos, Grid grid)
         {
-            Node startNode = new Node((int)startPos.X, (int)startPos.Y, false);
-            Node endNode = new Node((int)endPos.X, (int)endPos.Y, false);
-            List<Node> totalPath = new List<Node>();
+            Node startNode = grid.grid[(int)startPos.X, (int)startPos.Y];
+            Node endNode = grid.grid[(int)endPos.X, (int)endPos.Y];
 
             //nodes that have been discovered but not evaluated
             List<Node> openSet = new List<Node>();
             openSet.Add(startNode);
-            totalPath.Add(startNode);
 
             //nodes that have been evaluated
             List<Node> closedSet = new List<Node>();
-            Node cameFrom = startNode;
 
             startNode.G = 0;
             startNode.H = startNode.CalcDist(
@@ -47,12 +44,10 @@ namespace PathFinding
 
             while (openSet.Count > 0)
             {
-                //Node currentNode = FindLowest(openSet);
-                Node currentNode = openSet.OrderBy(node => node.F).ToList()[0];
+                Node currentNode = FindLowest(openSet);
 
                 openSet.Remove(currentNode);
                 currentNode.OpenSet = false;
-                closedSet.Add(currentNode);
                 currentNode.ClosedSet = true;
 
                 if (currentNode.X == endNode.X && currentNode.Y == endNode.Y)
@@ -86,18 +81,22 @@ namespace PathFinding
                 if ((currX + 1) < grid.MapWidth && (currY + 1) < grid.MapHeight)
                 {
                     adjacencies.Add(grid.grid[currX + 1, currY + 1]);
+                    grid.grid[currX + 1, currY + 1].Diag = true;
                 }
                 if ((currX + 1) < grid.MapWidth && (currY - 1) >= 0)
                 {
                     adjacencies.Add(grid.grid[currX + 1, currY - 1]);
+                    grid.grid[currX + 1, currY - 1].Diag = true;
                 }
                 if ((currX - 1) >= 0 && (currY + 1) < grid.MapHeight)
                 {
                     adjacencies.Add(grid.grid[currX - 1, currY + 1]);
+                    grid.grid[currX - 1, currY + 1].Diag = true;
                 }
                 if ((currX - 1) >= 0 && (currY - 1) >= 0)
                 {
                     adjacencies.Add(grid.grid[currX - 1, currY - 1]);
+                    grid.grid[currX - 1, currY - 1].Diag = true;
                 }
 
 
@@ -108,15 +107,25 @@ namespace PathFinding
                         continue;
                     }
 
-                    double neighborDist = currentNode.G + adjacencies[i].CalcDist(new Vector2(adjacencies[i].X, adjacencies[i].Y),
+                    double neighborDist = 0;
+
+                    if (adjacencies[i].Diag)
+                    {
+                        neighborDist = currentNode.G + 14;
+                    }
+                    else
+                    {
+                        neighborDist = currentNode.G + adjacencies[i].CalcDist(new Vector2(adjacencies[i].X, adjacencies[i].Y),
                         new Vector2(currentNode.X, currentNode.Y));
+                    }
+                    
 
                     if (!adjacencies[i].OpenSet)
                     {
                         adjacencies[i].OpenSet = true;
                         openSet.Add(adjacencies[i]);
                     }
-                    else if (neighborDist >= adjacencies[i].G)
+                    else if (neighborDist >= adjacencies[i].G || !adjacencies[i].Walkable)
                     {
                         continue;
                     }

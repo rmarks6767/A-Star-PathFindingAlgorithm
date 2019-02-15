@@ -45,3 +45,4 @@ D:\Users\river\Desktop\A_Star_PathFindingAlgorithm\PathFinding\obj\Debug\PathFin
 D:\Users\river\Desktop\A_Star_PathFindingAlgorithm\PathFinding\obj\Debug\PathFinding.csproj.CopyComplete
 D:\Users\river\Desktop\A_Star_PathFindingAlgorithm\PathFinding\obj\Debug\PathFinding.exe
 D:\Users\river\Desktop\A_Star_PathFindingAlgorithm\PathFinding\obj\Debug\PathFinding.pdb
+D:\Users\river\Desktop\A_Star_PathFindingAlgorithm\PathFinding\obj\Debug\PathFinding.csprojAssemblyReference.cache

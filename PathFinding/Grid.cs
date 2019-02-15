@@ -39,15 +39,15 @@ namespace PathFinding
         /// <param name="mapHeight">Height of the entire map</param>
         public Grid(int mapWidth, int mapHeight)
         {
-            grid = new Node[mapHeight, mapWidth];
+            grid = new Node[mapWidth, mapHeight];
             this.mapWidth = mapWidth;
             this.mapHeight = mapHeight;
 
-            for (int i = 0; i < MapWidth; i++)
+            for (int i = 0; i < MapHeight; i++)
             {
-                for (int ii = 0; ii < MapHeight; ii++)
+                for (int ii = 0; ii < MapWidth; ii++)
                 {
-                    grid[i, ii] = new Node(i, ii, false);
+                    grid[ii,i] = new Node(ii, i);
                 }
             }
         }
@@ -73,7 +73,7 @@ namespace PathFinding
             {
                 for (int ii = 0; ii < rect.Width; ii++)
                 {
-                    grid[i, ii].Walkable = false;
+                    grid[ii, i].Walkable = false;
                 }
             }
         }

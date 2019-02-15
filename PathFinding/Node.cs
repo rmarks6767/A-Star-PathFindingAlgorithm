@@ -33,13 +33,13 @@ namespace PathFinding
         public bool OpenSet { get { return openSet; } set { openSet = value; } }
         public bool ClosedSet { get { return closedSet; } set { closedSet = value; } }
 
-        public Node(int x, int y, bool diag)
+        public Node(int x, int y)
         {
             this.x = x;
             this.y = y;
             g = 0;
             h = 0;
-            this.diag = diag;
+            diag = false;
             walkable = true;
             openSet = false;
             closedSet = false;
@@ -54,7 +54,7 @@ namespace PathFinding
         /// <returns>returns the distance to either given point</returns>
         public double CalcDist(Vector2 currentPos, Vector2 goingTo)
         {
-            return Math.Pow(currentPos.X - goingTo.X, 2) + Math.Pow(currentPos.X - goingTo.Y, 2);
+            return Math.Pow(currentPos.X - goingTo.X, 2) + Math.Pow(currentPos.X - goingTo.Y, 2) * 10;
         }
     }
 }
