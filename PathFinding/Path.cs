@@ -18,6 +18,7 @@ namespace PathFinding
             while (currentNode.parents.Count > 0)
             {
                 parent = currentNode.parents.OrderBy(node => node.F).ToList()[0];
+
                 currentNode = parent;
                 totalPath.Add(currentNode);
             }
@@ -46,11 +47,13 @@ namespace PathFinding
 
             while (openSet.Count > 0)
             {
-                openSet.OrderBy(node => node.F).ToList();
-                Node currentNode = openSet[0];
+                //Node currentNode = FindLowest(openSet);
+                Node currentNode = openSet.OrderBy(node => node.F).ToList()[0];
 
                 openSet.Remove(currentNode);
+                currentNode.OpenSet = false;
                 closedSet.Add(currentNode);
+                currentNode.ClosedSet = true;
 
                 if (currentNode.X == endNode.X && currentNode.Y == endNode.Y)
                 {
@@ -58,7 +61,7 @@ namespace PathFinding
                 }
 
                 List<Node> adjacencies = new List<Node>();
-
+                
                 int currX = currentNode.X;
                 int currY = currentNode.Y;
 
@@ -66,41 +69,41 @@ namespace PathFinding
                 //Create the neighbors of the CurrentNode
                 if ((currY + 1) < grid.MapHeight)
                 {
-                    adjacencies.Add(new Node((currX), (currY + 1), false));
+                    adjacencies.Add(grid.grid[currX, currY + 1]);
                 }
                 if ((currY - 1) >= 0)
                 {
-                    adjacencies.Add(new Node((currX), (currY - 1), false));
+                    adjacencies.Add(grid.grid[currX, currY - 1]);
                 }
                 if ((currX + 1) < grid.MapWidth)
                 {
-                    adjacencies.Add(new Node((currX + 1), (currY), false));
+                    adjacencies.Add(grid.grid[currX + 1, currY]);
                 }
                 if ((currX - 1) >= 0)
                 {
-                    adjacencies.Add(new Node((currX - 1), (currY), false));
+                    adjacencies.Add(grid.grid[currX - 1, currY]);
                 }
                 if ((currX + 1) < grid.MapWidth && (currY + 1) < grid.MapHeight)
                 {
-                    adjacencies.Add(new Node((currX + 1), (currY + 1), true));
+                    adjacencies.Add(grid.grid[currX + 1, currY + 1]);
                 }
                 if ((currX + 1) < grid.MapWidth && (currY - 1) >= 0)
                 {
-                    adjacencies.Add(new Node((currX + 1), (currY - 1), true));
+                    adjacencies.Add(grid.grid[currX + 1, currY - 1]);
                 }
                 if ((currX - 1) >= 0 && (currY + 1) < grid.MapHeight)
                 {
-                    adjacencies.Add(new Node((currX - 1), (currY + 1), true));
+                    adjacencies.Add(grid.grid[currX - 1, currY + 1]);
                 }
                 if ((currX - 1) >= 0 && (currY - 1) >= 0)
                 {
-                    adjacencies.Add(new Node((currX - 1), (currY - 1), true));
+                    adjacencies.Add(grid.grid[currX - 1, currY - 1]);
                 }
 
 
                 for (int i = 0; i < adjacencies.Count; i++)
                 {
-                    if (closedSet.Exists(x => x.X == adjacencies[i].X && x.Y == adjacencies[i].Y) || grid.grid[adjacencies[i].X, adjacencies[i].Y] == 'X')
+                    if (adjacencies[i].ClosedSet || !adjacencies[i].Walkable)
                     {
                         continue;
                     }
@@ -108,11 +111,12 @@ namespace PathFinding
                     double neighborDist = currentNode.G + adjacencies[i].CalcDist(new Vector2(adjacencies[i].X, adjacencies[i].Y),
                         new Vector2(currentNode.X, currentNode.Y));
 
-                    if (!openSet.Exists(x => x.X == adjacencies[i].X && x.Y == adjacencies[i].Y))
+                    if (!adjacencies[i].OpenSet)
                     {
+                        adjacencies[i].OpenSet = true;
                         openSet.Add(adjacencies[i]);
                     }
-                    else if (neighborDist >= adjacencies[i].G && grid.grid[adjacencies[i].X, adjacencies[i].Y] == 'X')
+                    else if (neighborDist >= adjacencies[i].G)
                     {
                         continue;
                     }
@@ -123,6 +127,27 @@ namespace PathFinding
                 }
             }
             return null;
+        }
+
+        public Node FindLowest(List<Node> nodes)
+        {
+            Node min = null;
+            if (nodes.Count > 0)
+            {
+                min = nodes[0];
+            }
+            else
+            {
+                return null;
+            }
+            for (int i = 0; i < nodes.Count; i++ )
+            {
+                if (nodes[i].F < min.F)
+                {
+                    min = nodes[i];
+                }
+            }
+            return min;
         }
     }
 }

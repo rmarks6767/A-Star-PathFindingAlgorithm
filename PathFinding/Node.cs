@@ -16,8 +16,11 @@ namespace PathFinding
         public List<Node> parents;
         private double g;
         private double h;
-        private double f;
         private bool diag;
+        private bool walkable;
+        private bool openSet;
+        private bool closedSet;
+
 
         public int X { get { return x; } }
         public int Y { get { return y; } }
@@ -25,7 +28,10 @@ namespace PathFinding
         public double G { get { return g; } set { g = value; } }
         public double H { get { return h; } set { h = value; } }
         public double F { get { return g + h; } }
-        public bool Diag { get { return diag; } }
+        public bool Diag { get { return diag; } set { diag = value; } }
+        public bool Walkable { get { return walkable; } set { walkable = value; } }
+        public bool OpenSet { get { return openSet; } set { openSet = value; } }
+        public bool ClosedSet { get { return closedSet; } set { closedSet = value; } }
 
         public Node(int x, int y, bool diag)
         {
@@ -33,8 +39,10 @@ namespace PathFinding
             this.y = y;
             g = 0;
             h = 0;
-            f = 0;
             this.diag = diag;
+            walkable = true;
+            openSet = false;
+            closedSet = false;
             parents = new List<Node>();
         }
 

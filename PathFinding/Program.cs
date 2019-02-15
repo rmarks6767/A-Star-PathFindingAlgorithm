@@ -15,18 +15,28 @@ namespace PathFinding
 
             Path path = new Path();
 
-            List<Node> totalPath = path.GeneratePath(new Vector2(0, 0), new Vector2(0, 40), grid);
+            List<Node> totalPath = path.GeneratePath(new Vector2(0, 0), new Vector2(10, 10), grid);
+
+            Char[,] display = new char[grid.MapHeight, grid.MapWidth];
+
+            for (int i = 0; i < grid.MapHeight; i++)
+            {
+                for (int ii = 0; ii < grid.MapWidth; ii++)
+                {
+                    display[i, ii] = ' ';
+                }
+            }
 
             for (int i = 0; i < totalPath.Count; i++)
             {
-                grid.grid[totalPath[i].X, totalPath[i].Y] = 'O';
+                display[totalPath[i].X, totalPath[i].Y] = 'O'; 
             }
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < grid.MapHeight; i++)
             {
-                for (int ii = 0; ii < 100; ii++)
+                for (int ii = 0; ii < grid.MapWidth; ii++)
                 {
-                    Console.Write(grid.grid[i, ii]);
+                    Console.Write(display[i, ii]);
                 }
                 Console.WriteLine();
             }
