@@ -15,7 +15,9 @@ namespace PathFinding
 
             Path path = new Path();
 
-            List<Node> totalPath = path.GeneratePath(new Vector2(0, 0), new Vector2(99, 9), grid);
+            Random rand= new Random();
+
+            List<Node> totalPath = path.GeneratePath(new Vector2(rand.Next(0, grid.MapWidth), rand.Next(0, grid.MapHeight)), new Vector2(rand.Next(0, grid.MapWidth), rand.Next(0, grid.MapHeight)), grid);
 
             Char[,] display = new char[grid.MapWidth, grid.MapHeight];
 

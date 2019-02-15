@@ -120,7 +120,7 @@ namespace PathFinding
                     }
                     
 
-                    if (!adjacencies[i].OpenSet)
+                    if (!adjacencies[i].OpenSet && !adjacencies[i].ClosedSet )
                     {
                         adjacencies[i].OpenSet = true;
                         openSet.Add(adjacencies[i]);
