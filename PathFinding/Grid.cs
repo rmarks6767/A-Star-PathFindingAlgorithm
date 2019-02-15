@@ -69,9 +69,9 @@ namespace PathFinding
         /// <param name="rect"></param>
         public void AddStaticEntity(Rectangle rect)
         {
-            for (int i = rect.X; i < rect.Height; i++)
+            for (int i = rect.X; i < rect.Width + rect.X; i++)
             {
-                for (int ii = 0; ii < rect.Width; ii++)
+                for (int ii = rect.Y; ii < rect.Height + rect.Y; ii++)
                 {
                     grid[ii, i].Walkable = false;
                 }

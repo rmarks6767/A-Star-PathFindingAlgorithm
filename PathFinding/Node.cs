@@ -54,7 +54,7 @@ namespace PathFinding
         /// <returns>returns the distance to either given point</returns>
         public double CalcDist(Vector2 currentPos, Vector2 goingTo)
         {
-            return Math.Pow(currentPos.X - goingTo.X, 2) + Math.Pow(currentPos.X - goingTo.Y, 2) * 10;
+            return Math.Pow(currentPos.X - goingTo.X, 2) + Math.Pow(currentPos.Y - goingTo.Y, 2);
         }
     }
 }

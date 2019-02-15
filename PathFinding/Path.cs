@@ -33,6 +33,7 @@ namespace PathFinding
             //nodes that have been discovered but not evaluated
             List<Node> openSet = new List<Node>();
             openSet.Add(startNode);
+            startNode.OpenSet = true;
 
             //nodes that have been evaluated
             List<Node> closedSet = new List<Node>();
@@ -44,7 +45,7 @@ namespace PathFinding
 
             while (openSet.Count > 0)
             {
-                Node currentNode = FindLowest(openSet);
+                Node currentNode = FindLowest(openSet);;
 
                 openSet.Remove(currentNode);
                 currentNode.OpenSet = false;
@@ -59,7 +60,6 @@ namespace PathFinding
                 
                 int currX = currentNode.X;
                 int currY = currentNode.Y;
-
 
                 //Create the neighbors of the CurrentNode
                 if ((currY + 1) < grid.MapHeight)
@@ -107,31 +107,25 @@ namespace PathFinding
                         continue;
                     }
 
-                    double neighborDist = 0;
 
-                    if (adjacencies[i].Diag)
-                    {
-                        neighborDist = currentNode.G + 14;
-                    }
-                    else
-                    {
-                        neighborDist = currentNode.G + adjacencies[i].CalcDist(new Vector2(adjacencies[i].X, adjacencies[i].Y),
-                        new Vector2(currentNode.X, currentNode.Y));
-                    }
+                    double neighborDist = currentNode.G + adjacencies[i].CalcDist(new Vector2(adjacencies[i].X, adjacencies[i].Y),
+                    new Vector2(currentNode.X, currentNode.Y));
                     
 
-                    if (!adjacencies[i].OpenSet && !adjacencies[i].ClosedSet )
+                    if (!adjacencies[i].OpenSet && adjacencies[i].Walkable)
                     {
                         adjacencies[i].OpenSet = true;
                         openSet.Add(adjacencies[i]);
                     }
-                    else if (neighborDist >= adjacencies[i].G || !adjacencies[i].Walkable)
+                    else if (neighborDist >= adjacencies[i].G && !adjacencies[i].Walkable)
                     {
                         continue;
                     }
+
                     adjacencies[i].parents.Add(currentNode);
                     adjacencies[i].G = neighborDist;
-                    adjacencies[i].H = adjacencies[i].CalcDist(new Vector2(adjacencies[i].X, adjacencies[i].Y),
+                    adjacencies[i].H = adjacencies[i].CalcDist(
+                        new Vector2(adjacencies[i].X, adjacencies[i].Y),
                         new Vector2(endNode.X, endNode.Y));
                 }
             }

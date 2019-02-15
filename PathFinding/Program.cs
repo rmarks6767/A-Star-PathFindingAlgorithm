@@ -13,11 +13,15 @@ namespace PathFinding
         {
             Grid grid = new Grid(100, 100);
 
+            Rectangle rect = new Rectangle(5,32,45,20);
+
+            grid.AddStaticEntity(rect);
+
             Path path = new Path();
 
             Random rand= new Random();
 
-            List<Node> totalPath = path.GeneratePath(new Vector2(rand.Next(0, grid.MapWidth), rand.Next(0, grid.MapHeight)), new Vector2(rand.Next(0, grid.MapWidth), rand.Next(0, grid.MapHeight)), grid);
+            List<Node> totalPath = path.GeneratePath(new Vector2(0,0), new Vector2(99, 99), grid);
 
             Char[,] display = new char[grid.MapWidth, grid.MapHeight];
 
@@ -38,6 +42,10 @@ namespace PathFinding
             {
                 for (int ii = 0; ii < grid.MapHeight; ii++)
                 {
+                    if (!grid.grid[i, ii].Walkable)
+                    {
+                        display[i, ii] = 'X';
+                    }
                     Console.Write(display[i, ii]);
                 }
                 Console.WriteLine();
