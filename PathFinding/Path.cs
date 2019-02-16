@@ -107,7 +107,6 @@ namespace PathFinding
                         continue;
                     }
 
-
                     double neighborDist = currentNode.G + adjacencies[i].CalcDist(new Vector2(adjacencies[i].X, adjacencies[i].Y),
                     new Vector2(currentNode.X, currentNode.Y));
                     
