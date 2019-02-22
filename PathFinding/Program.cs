@@ -11,17 +11,17 @@ namespace PathFinding
     {
         static void Main(string[] args)
         {
-            Grid grid = new Grid(10, 10);
+            Grid grid = new Grid(100, 100);
 
-            //Rectangle rect = new Rectangle(5,32,45,20);
+            Rectangle rect = new Rectangle(5,32,45,20);
 
-            //grid.AddStaticEntity(rect);
+            grid.AddStaticEntity(rect);
 
             Path path = new Path();
 
             Random rand= new Random();
 
-            List<Node> totalPath = path.GeneratePath(new Vector2(0,0), new Vector2(9, 9), grid);
+            List<Node> totalPath = path.GeneratePath(new Vector2(0,0), new Vector2(83, 56), grid);
 
             Char[,] display = new char[grid.MapWidth, grid.MapHeight];
 
